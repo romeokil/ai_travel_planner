@@ -10,7 +10,7 @@ client = TavilyClient(
 
 def tavily_search(query):
 
-    resonse = client.search(
+    response = client.search(
         query=query,
         max_results=5
     )
@@ -23,7 +23,7 @@ def tavily_search(query):
         snippet = r.get("content" , "").strip()
 
         if len(snippet) > 300:
-            snippet = snippet[:300].rsplit("",1)[0] + "..."
+            snippet = snippet[:300].rsplit(" ",1)[0] + "..."
 
         results.append(f"{i}. **{title}**\n {url}\n {snippet}")
 

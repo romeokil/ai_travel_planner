@@ -23,7 +23,7 @@ load_dotenv()
 DATABASE_URL= os.getenv("DATABASE_URL")
 
 llm= ChatGroq(
-    model="llama-3.3-70b-versatile"
+    model="openai/gpt-oss-20b"
 )
 
 # ye smjh le ki ek trah se nodes define kiye hmlog 
@@ -65,13 +65,13 @@ def itinerary_agent(state: TravelState):
     prompt = f"""
     Create a Travel Itinerary.
     User Query:
-    {state['user_query']}
+    {state["user_query"]}
 
     Flight Results:
-    {state['flight_results']}
+    {state["flight_results"]}
 
     Hotel Results:
-    {state['hotel_results']}
+    {state["hotel_results"]}
 
     """
 
@@ -84,7 +84,7 @@ def itinerary_agent(state: TravelState):
 
     return {
         "itinerary": response.content,
-        "message": [response],
+        "messages": [response],
         "llm_calls": state.get("llm_calls",0) + 1
     } 
 
@@ -94,13 +94,13 @@ def final_agent(state: TravelState):
     Generate a final travel response.
 
     Flights:
-    {state[flight_results]}
+    {state["flight_results"]}
 
     Hotels:
-    {state[hotel_results]}
+    {state["hotel_results"]}
 
     Itinerary:
-    {state[itinerary]}
+    {state["itinerary"]}
 
     """
 
@@ -145,7 +145,7 @@ if __name__ == "__main__":
 
     user_input = input("Enter Your Travel Plans: ")
 
-    result = app.invoke(
+    results = app.invoke(
         {
             "message":[
                 HumanMessage(content=user_input)
